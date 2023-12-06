@@ -14,15 +14,3 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
-
-export function getRoutes() {
-  return JSON.parse(localStorage.getItem(RoutesKey))
-}
-
-export function setRoutes(routes) {
-  localStorage.setItem(RoutesKey, JSON.stringify(routes))
-}
-
-export function removeRoutes() {
-  return localStorage.removeItem(RoutesKey)
-}

@@ -2,22 +2,66 @@
   <div class="home-container">
     <div class="panel">
       <el-row :gutter="20">
-        <el-col :span="8" class="card-panel-col">
+        <el-col :span="6" class="card-panel-col">
+          <div class="content" :style="{ background: colors[3] }">
+            <div class="title">总导流数</div>
+            <div class="totality">
+              {{ dataBoard.hotSum + dataBoard.everyOneIsPlayingSum + dataBoard.brazilElectronSum }}
+            </div>
+            <el-row>
+              <el-col :span="12">今日</el-col>
+              <el-col :span="12">昨日</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                {{ dataBoard.todayHot + dataBoard.todayEveryOneIsPlaying + dataBoard.todayBrazilElectron }}
+              </el-col>
+              <el-col :span="12">
+                {{ dataBoard.yesterdayHot + dataBoard.yesterdayEveryOneIsPlaying + dataBoard.yesterdayBrazilElectron }}
+              </el-col>
+            </el-row>
+          </div>
+        </el-col>
+        <el-col :span="6" class="card-panel-col">
           <div class="content" :style="{ background: colors[0] }">
-            <div class="title">今日页面请求（次）</div>
-            <div class="totality">{{ todayRequestNum }}</div>
+            <div class="title">热门推荐</div>
+            <div class="totality">{{ dataBoard.hotSum }}</div>
+            <el-row>
+              <el-col :span="12">今日</el-col>
+              <el-col :span="12">昨日</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">{{ dataBoard.todayHot }}</el-col>
+              <el-col :span="12">{{ dataBoard.yesterdayHot }}</el-col>
+            </el-row>
           </div>
         </el-col>
-        <el-col :span="8" class="card-panel-col">
+        <el-col :span="6" class="card-panel-col">
           <div class="content" :style="{ background: colors[1] }">
-            <div class="title">今日应用下载（次）</div>
-            <div class="totality">{{ todayDownloadNum }}</div>
+            <div class="title">大家都在玩</div>
+            <div class="totality">{{ dataBoard.everyOneIsPlayingSum }}</div>
+            <el-row>
+              <el-col :span="12">今日</el-col>
+              <el-col :span="12">昨日</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">{{ dataBoard.todayEveryOneIsPlaying }}</el-col>
+              <el-col :span="12">{{ dataBoard.yesterdayEveryOneIsPlaying }}</el-col>
+            </el-row>
           </div>
         </el-col>
-        <el-col :span="8" class="card-panel-col">
+        <el-col :span="6" class="card-panel-col">
           <div class="content" :style="{ background: colors[2] }">
-            <div class="title">今日打开应用（次）</div>
-            <div class="totality">{{ todayOpenNum }}</div>
+            <div class="title">巴西电子</div>
+            <div class="totality">{{ dataBoard.brazilElectronSum }}</div>
+            <el-row>
+              <el-col :span="12">今日</el-col>
+              <el-col :span="12">昨日</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">{{ dataBoard.todayBrazilElectron }}</el-col>
+              <el-col :span="12">{{ dataBoard.yesterdayBrazilElectron }}</el-col>
+            </el-row>
           </div>
         </el-col>
       </el-row>
@@ -34,23 +78,32 @@
         </div>
       </el-col>
     </el-row>
-    <!-- <el-row :gutter="30" style="margin-top: 32px;" class="panel-group" title="打开应用">
-      <el-col :xs="12" :sm="12" :lg="18">
-        <line-chart />
-      </el-col> 
-    </el-row>-->
     <div class="table">
       <div class="title">游戏概况</div>
       <el-table :data="tableData" border style="width: 100%;" align="center" :header-cell-style="{
         height: '56px', color: '#101010', fontSize: '16px', 'text-align': 'center'
-      }" :row-style="{ 'height': '20px', 'padding': '0' }" @current-change="rowClick" :highlight-current-row="true">
+      }" :row-style="{ 'height': '20px', 'padding': '0' }">
         <el-table-column label="排名" type="index" width="100" align="center">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{ (params.page - 1) * params.pageSize + scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-for="(item, index) in cols" :key="index" :prop="item.prop" :label="item.label"
-          :min-width="item.width" :align="item.align" />
+        <el-table-column label="游戏分类" prop="gameCategory" min-width="120" align="center">
+          <template slot-scope="scope">
+            <el-tag v-for="(item, index) in scope.row.gameCategory.split(',')" :key="index"
+              style="margin-right: 10px;margin-top: 10px;">
+              {{ getCategoryName(item) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="语言" prop="languageName" min-width="120" align="center"></el-table-column>
+        <el-table-column label="游戏LOGO" prop="gameLogo" min-width="120" align="center">
+          <template slot-scope="scope">
+            <el-image style="width: 100px; height: 100px" :src="scope.row.gameLogo"></el-image>
+          </template>
+        </el-table-column>
+        <el-table-column label="游戏名称" prop="gameName" min-width="120" align="center"></el-table-column>
+        <el-table-column label="导流次数" prop="openNum" min-width="120" align="center"></el-table-column>
       </el-table>
     </div>
   </div>
@@ -60,66 +113,30 @@
 import { GetAllStates, GetDataProfilingTableData } from '@/api/dashboard'
 import { GetlistByGame } from '@/api/tool'
 import LineChart from './components/LineChart.vue'
+import { GAME_CATEGORYS } from '@/utils/constant'
 
 export default {
   name: 'home',
   data() {
     return {
       gameList: [],
-      todayRequestNum: 1,
-      todayDownloadNum: 1,
-      todayOpenNum: 1,
+      dataBoard: {
+        hotSum: 0,
+        everyOneIsPlayingSum: 0,
+        brazilElectronSum: 0,
+        todayHot: 0,
+        yesterdayHot: 0,
+        todayEveryOneIsPlaying: 0,
+        yesterdayEveryOneIsPlaying: 0,
+        todayBrazilElectron: 0,
+        yesterdayBrazilElectron: 0
+      },
       requestDataOfTime: [],
       downloadDataOfTime: [],
       openDataOfTime: [],
       colors: ['#bc8ef7', '#f18f99', '#8098f2', '#c3c34a', '#448787'],
       colors2: ['#bc8ef7', '#c3c34a'],
-      cols: [
-        {
-          prop: 'gameType',
-          label: '类型',
-          width: '120',
-          align: "center"
-        }, {
-          prop: 'gameName',
-          label: '游戏名称',
-          width: '140',
-          align: "center"
-        }, {
-          prop: 'gameLanguage',
-          label: '游戏语言',
-          width: '140',
-          align: "center"
-        }, {
-          prop: 'userName',
-          label: '客户名称',
-          width: '140',
-          align: "center"
-        }, {
-          prop: 'requestNum',
-          label: '页面请求（次）',
-          width: '120',
-          align: "center"
-        }, {
-          prop: 'downloadNum',
-          label: '应用下载（次）',
-          width: '120',
-          align: "center"
-        }, {
-          prop: 'openNum',
-          label: '应用打开（次）',
-          width: '120',
-          align: "center"
-        }],
-      tableData: [{
-        ranking: 1,
-        gameType: '竞技',
-        gameName: 'COC',
-        gameLanguage: 'COC',
-        requestNum: 0,
-        downloadNum: 0,
-        openNum: 0,
-      },],
+      tableData: [],
       params: {
         id: 0,
         page: 1,
@@ -141,9 +158,7 @@ export default {
       let loading = this.$loading();
       GetAllStates(this.params).then(res => {
         this.$refs.lineChart.initCharts(res.data)
-        this.todayRequestNum = res.data.todayRequestNum
-        this.todayDownloadNum = res.data.todayDownloadNum
-        this.todayOpenNum = res.data.todayOpenNum
+        this.dataBoard = { ...res.data }
       }).finally(() => {
         loading.close();
       })
@@ -174,6 +189,9 @@ export default {
       this.currentGameId = val;
       this.params.gameId = val;
       this.getStatisticalData();
+    },
+    getCategoryName(item) {
+      return GAME_CATEGORYS[item]
     },
     //行点击事件
     rowClick(currentRow, oldCurrentRow) {
@@ -206,9 +224,10 @@ export default {
 
       .desc {
         .content {
+
           .title {
             font-size: 18px;
-            color: #101010;
+            color: white;
             border: 1px solid;
           }
         }
@@ -255,6 +274,7 @@ export default {
   padding: 16px 30px;
   background: #bc8ef7;
   border-radius: 10px;
+  color: #fff;
 
   .title,
   .text,
@@ -268,6 +288,10 @@ export default {
     color: #fff;
     font-weight: bold;
     margin-top: 8px;
+  }
+
+  .el-col {
+    padding-top: 10px;
   }
 
 }

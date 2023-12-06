@@ -107,6 +107,7 @@ const actions = {
     return new Promise(async (resolve, reject) => {
       let res = await GetSysMenuList();
       if (res.code === 1000) {
+        btnPermissions.length = 0
         //将后端返回的菜单数据转换为route路由数据
         let routes = convert(res.data)
         //根据路由匹配规则，path: '*'跳转404页面需要在路由数组的最后

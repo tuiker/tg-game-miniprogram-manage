@@ -9,3 +9,8 @@ export default {
   name: 'App'
 }
 </script>
+<style>
+.el-image-viewer__close {
+  color: #fff !important;
+}
+</style>

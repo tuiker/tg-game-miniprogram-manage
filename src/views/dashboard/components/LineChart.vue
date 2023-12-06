@@ -21,7 +21,7 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: ['页面请求', '应用下载', '应用打开']
+          data: ['热门推荐', '大家都在玩', '巴西电子']
         },
         xAxis: {
           type: 'category',
@@ -61,39 +61,39 @@ export default {
     //生成Y轴数据
     createyAxisData(data) {
       //组装折线图数据
-      let requestDataOfTime = [];
-      let downloadDataOfTime = [];
-      let openDataOfTime = [];
+      let hotDataOfTime = [];
+      let everyOneIsPlayingDataOfTime = [];
+      let brazilElectronDataOfTime = [];
       let dataItem = null;
       this.sevenDayArr.forEach(day => {
-        dataItem = data.requestDataOfTime.find(item => item.time == day);
-        requestDataOfTime.push(dataItem ? dataItem.num : 0);
+        dataItem = data.hotDataOfTime.find(item => item.time == day);
+        hotDataOfTime.push(dataItem ? dataItem.num : 0);
 
-        dataItem = data.downloadDataOfTime.find(item => item.time == day);
-        downloadDataOfTime.push(dataItem ? dataItem.num : 0);
+        dataItem = data.everyOneIsPlayingDataOfTime.find(item => item.time == day);
+        everyOneIsPlayingDataOfTime.push(dataItem ? dataItem.num : 0);
 
-        dataItem = data.openDataOfTime.find(item => item.time == day);
-        openDataOfTime.push(dataItem ? dataItem.num : 0);
+        dataItem = data.brazilElectronDataOfTime.find(item => item.time == day);
+        brazilElectronDataOfTime.push(dataItem ? dataItem.num : 0);
       });
 
       return [
         {
-          name: '页面请求',
+          name: '热门推荐',
           type: 'line',
           color: '#e66',
-          data: requestDataOfTime,
+          data: hotDataOfTime,
         },
         {
-          name: '应用下载',
+          name: '大家都在玩',
           type: 'line',
           color: '#facd66',
-          data: downloadDataOfTime,
+          data: everyOneIsPlayingDataOfTime,
         },
         {
-          name: '应用打开',
+          name: '巴西电子',
           type: 'line',
           color: '#91cc75',
-          data: openDataOfTime,
+          data: brazilElectronDataOfTime,
         }
       ];
     }
