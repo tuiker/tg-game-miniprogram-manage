@@ -82,7 +82,8 @@
       <div class="title">游戏概况</div>
       <el-table :data="tableData" border style="width: 100%;" align="center" :header-cell-style="{
         height: '56px', color: '#101010', fontSize: '16px', 'text-align': 'center'
-      }" :row-style="{ 'height': '20px', 'padding': '0' }">
+      }" :row-style="{ 'height': '20px', 'padding': '0' }" v-loading="tableLoading" @current-change="rowClick"
+        :highlight-current-row="true">
         <el-table-column label="排名" type="index" width="100" align="center">
           <template slot-scope="scope">
             <span>{{ (params.page - 1) * params.pageSize + scope.$index + 1 }}</span>
@@ -137,6 +138,7 @@ export default {
       colors: ['#bc8ef7', '#f18f99', '#8098f2', '#c3c34a', '#448787'],
       colors2: ['#bc8ef7', '#c3c34a'],
       tableData: [],
+      tableLoading: false,
       params: {
         id: 0,
         page: 1,
@@ -165,8 +167,11 @@ export default {
     },
     //获取数据概况表格数据
     getTableData() {
+      this.tableLoading = true
       GetDataProfilingTableData().then(res => {
         this.tableData = res.data
+      }).finally(() => {
+        this.tableLoading = false
       })
     },
     //分页查询
