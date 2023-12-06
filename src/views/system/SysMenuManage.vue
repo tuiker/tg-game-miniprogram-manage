@@ -9,10 +9,9 @@
             <el-table-column label="名称" prop="name" min-width="120" align="center"></el-table-column>
             <el-table-column label="类型" prop="type" min-width="120" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.type == 1" style="margin-right: 10px;margin-top: 10px;">目录</el-tag>
-                    <el-tag v-else-if="scope.row.type == 2" style="margin-right: 10px;margin-top: 10px;"
-                        type="warning">菜单</el-tag>
-                    <el-tag v-else style="margin-right: 10px;margin-top: 10px;" type="danger">按钮</el-tag>
+                    <el-tag v-if="scope.row.type == 1">目录</el-tag>
+                    <el-tag v-else-if="scope.row.type == 2" type="warning">菜单</el-tag>
+                    <el-tag v-else type="danger">按钮</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="路由地址" prop="path" min-width="120" align="center"></el-table-column>
