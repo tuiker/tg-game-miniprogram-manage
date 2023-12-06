@@ -16,10 +16,11 @@ export function GetAllStates(params) {
  * 获取数据概况表格数据
  * @returns 
  */
-export function GetDataProfilingTableData() {
+export function GetDataProfilingTableData(params) {
   return request({
     url: '/pc/data/getDataProfilingTableData',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

@@ -1,5 +1,11 @@
 <template>
   <div>
+    <el-card shadow="never">
+      <el-select v-model="orderType" @change="getTableData">
+        <el-option label="按游戏添加时间倒序" :value="1"></el-option>
+        <el-option label="按导流次数倒序" :value="2"></el-option>
+      </el-select>
+    </el-card>
     <el-table :data="tableData" border style="width: 100%;" align="center" :header-cell-style="{
       height: '56px', color: '#101010', fontSize: '16px', 'text-align': 'center'
     }" :row-style="{ 'height': '20px', 'padding': '0' }" v-loading="tableLoading">
@@ -38,7 +44,8 @@ export default {
   data() {
     return {
       tableData: [],
-      tableLoading: false
+      tableLoading: false,
+      orderType: 1
     }
   },
 
@@ -49,7 +56,7 @@ export default {
     //获取数据概况表格数据
     getTableData() {
       this.tableLoading = true
-      GetDataProfilingTableData().then(res => {
+      GetDataProfilingTableData({ orderType: this.orderType }).then(res => {
         this.tableData = res.data
       }).finally(() => {
         this.tableLoading = false

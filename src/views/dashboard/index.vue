@@ -168,7 +168,7 @@ export default {
     //获取数据概况表格数据
     getTableData() {
       this.tableLoading = true
-      GetDataProfilingTableData().then(res => {
+      GetDataProfilingTableData({ orderType: 2 }).then(res => {
         this.tableData = res.data
       }).finally(() => {
         this.tableLoading = false
