@@ -37,7 +37,8 @@ export default {
       showUpload: false, //控制limit最大值之后 关闭上传按钮
       dialogVisible: false, //查看图片弹出框
       imgUrl: [], //上传图片后地址合集
-      values: [] //存储当前组件的文件列表
+      values: [], //存储当前组件的文件列表
+      loading: null,
     };
   },
   //监听上传图片的数组(为了处理修改时,自动渲染问题,和上传按钮消失问题);
@@ -98,6 +99,11 @@ export default {
           message: "图片大小必须小于2M",
         });
       } else {
+        this.loading = this.$loading({
+          lock: true,
+          text: '上传中',
+          spinner: 'el-icon-loading'
+        });
         if (this.limit == 1) this.imgUrl = []; //此处判断为一张的时候需要清空数组
         let params = new FormData();
         params.append("files", file);
@@ -105,6 +111,12 @@ export default {
           fileList[fileList.length - 1].realUrl = res.data[0];
           this.values = fileList;
           this.$emit("getUrl", res.data[0]);
+
+          this.$message.success("上传成功！");
+          this.loading.close();
+        }).catch((err) => {
+          this.loading.close();
+          this.$message.error("上传失败，请重试！");
         });
       }
     },
