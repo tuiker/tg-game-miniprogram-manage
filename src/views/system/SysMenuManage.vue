@@ -21,6 +21,7 @@
                     <i :class="scope.row.icon" style="font-size: 30px;"></i>
                 </template>
             </el-table-column>
+            <el-table-column label="排序" prop="sort" min-width="120" align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" min-width="140" align="center">
                 <template slot-scope="scope">
                     <el-button @click="editRow(scope.row)" type="text" size="small">编辑</el-button>

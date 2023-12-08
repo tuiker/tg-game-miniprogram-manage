@@ -175,13 +175,4 @@ export default {
 .gametable {
   margin-top: 10px;
 }
-
-.table {
-  // background: #fff;
-
-  .el-pagination {
-    padding: 20px 40px;
-    background: #fff;
-  }
-}
 </style>

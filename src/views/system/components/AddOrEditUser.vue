@@ -27,6 +27,7 @@
 
 <script>
 import { AddSysUser, UpdateSysUser } from '@/api/sysUser'
+import { ListAllRole } from '@/api/sysRole'
 import Upload from '@/views/gameManage/components/Upload'
 
 
@@ -48,12 +49,18 @@ export default {
             roleList: [],
         };
     },
+    created() {
+        //初始化角色选择框
+        this.initRoleSelector()
+    },
     methods: {
         open(data) {
             if (data && data.id) {
                 this.isAdd = false
                 this.titel = '编辑用户'
-                this.userImgList = [{ url: data.userImg }]
+                if (data.userImg) {
+                    this.userImgList = [{ url: data.userImg }]
+                }
                 this.formData = { ...data }
             } else {
                 this.isAdd = true
@@ -100,6 +107,13 @@ export default {
                 password: '',
                 userImg: '',
                 roleId: '',
+            }
+        },
+        //初始化角色选择框
+        async initRoleSelector() {
+            let { code, data } = await ListAllRole();
+            if (code === 1000) {
+                this.roleList = data
             }
         },
         //获取用户头像图片url

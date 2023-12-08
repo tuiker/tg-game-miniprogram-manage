@@ -11,7 +11,7 @@
                 <el-form-item style="margin-bottom: 0px;">
                     <el-button @click="onSerach">查询</el-button>
                     <el-button @click="onRefresh">刷新</el-button>
-                    <el-button type="primary" @click="addRow">添加</el-button>
+                    <el-button type="primary" v-permission="'addUser'" @click="addRow">添加</el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -34,9 +34,14 @@
             <el-table-column label="角色" prop="roleName" min-width="120" align="center"></el-table-column>
             <el-table-column fixed="right" label="操作" min-width="140" align="center">
                 <template slot-scope="scope">
-                    <el-button @click="editRow(scope.row)" type="text" size="small">编辑</el-button>
-                    <el-button @click="updatePassword(scope.row)" type="text" size="small">修改密码</el-button>
-                    <el-button @click="deleteRow(scope.row.id)" type="text" size="small" style="color: red;">删除</el-button>
+                    <template v-if="scope.row.id != 1">
+                        <el-button v-permission="'editUser'" @click="editRow(scope.row)" type="text"
+                            size="small">编辑</el-button>
+                        <el-button v-permission="'updatePassword'" @click="updatePassword(scope.row)" type="text"
+                            size="small">修改密码</el-button>
+                        <el-button v-permission="'deleteUser'" @click="deleteRow(scope.row.id)" type="text" size="small"
+                            style="color: red;">删除</el-button>
+                    </template>
                 </template>
             </el-table-column>
         </el-table>
