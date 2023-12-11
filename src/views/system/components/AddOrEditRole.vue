@@ -50,7 +50,7 @@ export default {
                 roleCode: [{ required: true, message: '请输入角色编码', trigger: 'blur' }],
             },
             menuList: [],
-            treeProps: { label: 'name', children: 'childrenList' }
+            treeProps: { label: 'name', children: 'childrenList', disabled: this.disabledFunc }
         };
     },
     created() {
@@ -135,6 +135,8 @@ export default {
                 //选中,递归设置所有父节点选中
                 this.setParentChecked(node);
             } else {
+                //取消选中，递归取消类型是目录的父节点
+                this.setParentNoChecked(node);
                 //取消选中,所有子节点取消选中
                 this.setChildenNoChecked(node);
             }
@@ -150,6 +152,18 @@ export default {
                 }
             }
         },
+        //递归设置所有父节点取消选中
+        setParentNoChecked(node) {
+            //父节点有值 并且 父节点的数据对象类型为目录
+            if (node.parent && node.parent.data.type == 1) {
+                let parent = node.parent
+                //目录父节点下的子节点没有一个选中的，取消目录父节点的选中
+                if (!parent.childNodes.some(item => item.checked === true)) {
+                    parent.checked = false
+                    this.setParentNoChecked(parent)
+                }
+            }
+        },
         //所有子节点取消选中
         setChildenNoChecked(node) {
             for (let i = 0; i < node.childNodes.length; i++) {
@@ -157,6 +171,10 @@ export default {
                 this.setChildenNoChecked(node.childNodes[i]);
             }
         },
+        //禁用校验-目录禁止选中
+        disabledFunc(data, node) {
+            return data.type === 1
+        }
     },
 }
 
