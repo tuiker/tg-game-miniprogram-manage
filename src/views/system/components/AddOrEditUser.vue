@@ -1,5 +1,6 @@
 <template>
-    <el-dialog :title="titel" :visible.sync="visible" width="600px" top="6vh" @close="resetFormData">
+    <el-dialog :title="titel" :visible.sync="visible" width="600px" top="6vh" @close="resetFormData"
+        :close-on-click-modal="false">
         <el-form ref="dataForm" :rules="rules" :model="formData" label-width="100px">
             <el-form-item label="用户账号:" prop="userName">
                 <el-input v-model.trim="formData.userName" placeholder="请输入用户账号" maxlength="30"

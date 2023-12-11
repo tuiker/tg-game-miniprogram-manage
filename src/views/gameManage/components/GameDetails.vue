@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="titel" :visible.sync="visible" width="1000px" top="6vh">
+    <el-dialog :title="titel" :visible.sync="visible" width="1000px" top="6vh" :close-on-click-modal="false">
         <el-form ref="dataForm" :model="formData" label-width="200px">
             <el-form-item label="游戏名称:" prop="gameName">
                 <el-input v-model="formData.gameName" style="width: 400px;" readonly></el-input>

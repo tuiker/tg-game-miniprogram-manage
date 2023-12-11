@@ -1,5 +1,6 @@
 <template>
-    <el-dialog :title="titel" :visible.sync="visible" width="600px" top="6vh" @close="resetFormData" v-loading="loading">
+    <el-dialog :title="titel" :visible.sync="visible" width="600px" top="6vh" @close="resetFormData" v-loading="loading"
+        :close-on-click-modal="false">
         <el-form ref="dataForm" :rules="rules" :model="formData" label-width="100px">
             <el-form-item label="角色名称:" prop="roleName">
                 <el-input v-model.trim="formData.roleName" maxlength="30" placeholder="请输入角色名称"></el-input>

@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="titel" :visible.sync="visible" width="800px" top="6vh">
+    <el-dialog :title="titel" :visible.sync="visible" width="800px" top="6vh" :close-on-click-modal="false">
         <el-form ref="dataForm" :rules="rules" :model="formData" label-width="100px">
             <el-form-item label="上级权限:" prop="parentId">
                 <el-cascader v-model="formData.parentId" :options="cascaderOptions" :props="cascaderProps"
