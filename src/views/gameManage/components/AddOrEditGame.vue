@@ -2,7 +2,8 @@
     <el-dialog :title="titel" :visible.sync="visible" width="1000px" top="6vh" @close="resetFormData">
         <el-form ref="dataForm" :rules="rules" :model="formData" label-width="200px">
             <el-form-item label="游戏名称:" prop="gameName">
-                <el-input v-model="formData.gameName" placeholder="请输入游戏名称" style="width: 400px;"></el-input>
+                <el-input v-model="formData.gameName" placeholder="请输入游戏名称" style="width: 400px;"
+                    maxlength="100"></el-input>
             </el-form-item>
             <el-form-item label="游戏分类:" prop="gameCategoryList">
                 <el-checkbox-group v-model="formData.gameCategoryList" size="small" @change="checkedBoxChange">
@@ -19,7 +20,7 @@
             </el-form-item>
             <el-form-item label="游戏链接:" prop="gameUrl">
                 <el-input type="textarea" resize="none" :rows="4" v-model="formData.gameUrl" placeholder="请输入游戏链接"
-                    style="width: 400px;"></el-input>
+                    style="width: 400px;" maxlength="500"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">

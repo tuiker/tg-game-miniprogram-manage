@@ -6,7 +6,7 @@
                     style="width: 100%;"></el-cascader>
             </el-form-item>
             <el-form-item label="权限名称:" prop="name">
-                <el-input v-model="formData.name" placeholder="请输入权限名称"></el-input>
+                <el-input v-model="formData.name" maxlength="30" placeholder="请输入权限名称"></el-input>
             </el-form-item>
             <el-form-item label="权限类型:" prop="type">
                 <el-radio-group v-model="formData.type" @change="typeChange">
@@ -16,20 +16,20 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-if="formData.type != 3" label="路由地址:" prop="path">
-                <el-input v-model="formData.path" placeholder="请输入路由地址"></el-input>
+                <el-input v-model="formData.path" placeholder="请输入路由地址" maxlength="100"></el-input>
             </el-form-item>
             <el-form-item v-if="formData.type == 2" label="组件路径:" prop="component" :rules="componentRules">
-                <el-input v-model="formData.component" placeholder="请输入组件路径"></el-input>
+                <el-input v-model="formData.component" placeholder="请输入组件路径" maxlength="100"></el-input>
             </el-form-item>
             <el-form-item v-if="formData.type == 3" label="权限编码:" prop="component"
                 :rules="[{ required: true, message: '请输入权限编码', trigger: 'blur' }]">
-                <el-input v-model="formData.component" placeholder="请输入权限编码"></el-input>
+                <el-input v-model="formData.component" placeholder="请输入权限编码" maxlength="100"></el-input>
             </el-form-item>
             <el-form-item v-if="formData.type != 3" label="菜单图标:" prop="icon">
-                <el-input v-model="formData.icon" placeholder="请输入菜单图标标识"></el-input>
+                <el-input v-model="formData.icon" placeholder="请输入菜单图标标识" maxlength="100"></el-input>
             </el-form-item>
             <el-form-item label="显示顺序:" prop="sort">
-                <el-input v-model="formData.sort" placeholder="请输入显示顺序"></el-input>
+                <el-input v-model="formData.sort" placeholder="请输入显示顺序" maxlength="3"></el-input>
             </el-form-item>
             <el-form-item v-if="formData.type != 3" label="是否隐藏:" prop="hidden">
                 <el-radio-group v-model="formData.hidden">

@@ -2,13 +2,13 @@
     <el-dialog :title="titel" :visible.sync="visible" width="600px" top="6vh" @close="resetFormData" v-loading="loading">
         <el-form ref="dataForm" :rules="rules" :model="formData" label-width="100px">
             <el-form-item label="角色名称:" prop="roleName">
-                <el-input v-model.trim="formData.roleName" placeholder="请输入角色名称"></el-input>
+                <el-input v-model.trim="formData.roleName" maxlength="30" placeholder="请输入角色名称"></el-input>
             </el-form-item>
             <el-form-item label="角色编码:" prop="roleCode">
-                <el-input v-model.trim="formData.roleCode" placeholder="请输入角色编码"></el-input>
+                <el-input v-model.trim="formData.roleCode" maxlength="30" placeholder="请输入角色编码"></el-input>
             </el-form-item>
             <el-form-item label="角色描述:" prop="roleDescribe">
-                <el-input type="textarea" resize="none" :rows="4" v-model="formData.roleDescribe"
+                <el-input type="textarea" resize="none" :rows="4" v-model="formData.roleDescribe" maxlength="200"
                     placeholder="请输入角色描述"></el-input>
             </el-form-item>
             <el-form-item label="角色权限:">
