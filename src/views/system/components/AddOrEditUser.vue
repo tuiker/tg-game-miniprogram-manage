@@ -13,7 +13,6 @@
             </el-form-item>
             <el-form-item label="用户角色:" prop="roleId">
                 <el-select v-model="formData.roleId" placeholder="请选择用户角色" style="width: 250px;">
-                    <el-option :label="'无'" :value="-1"></el-option>
                     <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
                     </el-option>
                 </el-select>

@@ -82,7 +82,6 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        localStorage.setItem("flag", 2)
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
