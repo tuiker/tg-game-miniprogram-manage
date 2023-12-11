@@ -20,7 +20,7 @@ export function validUsername(str) {
 }
 
 /** 校验：只能输入正整数 */
-export const positiveIntegerValidate = function(rule, value, callback){
+export const positiveIntegerValidate = function (rule, value, callback) {
   if (/^(?:[1-9]\d*)$/.test(value) == false) {
     callback(new Error('请输入正整数'))
   } else {
@@ -43,5 +43,17 @@ export const positiveDoubleOrZeroValidate = function (rule, value, callback) {
     callback()
   } else {
     callback(new Error('请输入一个最多两位小数的正数（包括0）'))
+  }
+}
+
+/** 密码校验 */
+export const validatePassword = (rule, value, callback) => {
+  let reg = /^[a-zA-Z0-9@.+-]*$/;
+  if (!value || value.length < 6) {
+    callback(new Error('请输入一个至少6位的密码'));
+  } else if (!reg.test(value)) {
+    callback(new Error('只能输入英文、数字、@.+-等特殊字符'));
+  } else {
+    callback();
   }
 }

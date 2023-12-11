@@ -106,6 +106,10 @@
         <el-table-column label="游戏名称" prop="gameName" min-width="120" align="center"></el-table-column>
         <el-table-column label="导流次数" prop="openNum" min-width="120" align="center"></el-table-column>
       </el-table>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
+        :page-sizes="[10, 20, 50, 100]" :page-size="params.pageSize" layout="->,total, sizes, prev, pager, next, jumper"
+        :total="params.total">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -140,9 +144,11 @@ export default {
       tableData: [],
       tableLoading: false,
       params: {
-        id: 0,
+        gameId: null,
+        orderType: 2,
         page: 1,
-        pageSize: 10
+        pageSize: 10,
+        total: 0
       },
       currentGameId: '', //当前选中的游戏ID
     }
@@ -168,8 +174,9 @@ export default {
     //获取数据概况表格数据
     getTableData() {
       this.tableLoading = true
-      GetDataProfilingTableData({ orderType: 2 }).then(res => {
-        this.tableData = res.data
+      GetDataProfilingTableData(this.params).then(res => {
+        this.tableData = res.data.list
+        this.params.total = res.data.total
       }).finally(() => {
         this.tableLoading = false
       })
@@ -201,7 +208,15 @@ export default {
     //行点击事件
     rowClick(currentRow, oldCurrentRow) {
       this.gameChange(currentRow.id);
-    }
+    },
+    handleSizeChange(val) {
+      this.params.pageSize = val
+      this.getTableData()
+    },
+    handleCurrentChange(val) {
+      this.params.page = val
+      this.getTableData()
+    },
   }
 
 

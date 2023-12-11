@@ -21,7 +21,7 @@ export default {
           trigger: 'axis',
         },
         legend: {
-          data: ['热门推荐', '大家都在玩', '巴西电子']
+          data: ['导流数']
         },
         xAxis: {
           type: 'category',
@@ -61,39 +61,19 @@ export default {
     //生成Y轴数据
     createyAxisData(data) {
       //组装折线图数据
-      let hotDataOfTime = [];
-      let everyOneIsPlayingDataOfTime = [];
-      let brazilElectronDataOfTime = [];
+      let allDataOfTime = [];
       let dataItem = null;
       this.sevenDayArr.forEach(day => {
-        dataItem = data.hotDataOfTime.find(item => item.time == day);
-        hotDataOfTime.push(dataItem ? dataItem.num : 0);
-
-        dataItem = data.everyOneIsPlayingDataOfTime.find(item => item.time == day);
-        everyOneIsPlayingDataOfTime.push(dataItem ? dataItem.num : 0);
-
-        dataItem = data.brazilElectronDataOfTime.find(item => item.time == day);
-        brazilElectronDataOfTime.push(dataItem ? dataItem.num : 0);
+        dataItem = data.allDataOfTime.find(item => item.time == day);
+        allDataOfTime.push(dataItem ? dataItem.num : 0);
       });
 
       return [
         {
-          name: '热门推荐',
+          name: '导流数',
           type: 'line',
           color: '#e66',
-          data: hotDataOfTime,
-        },
-        {
-          name: '大家都在玩',
-          type: 'line',
-          color: '#facd66',
-          data: everyOneIsPlayingDataOfTime,
-        },
-        {
-          name: '巴西电子',
-          type: 'line',
-          color: '#91cc75',
-          data: brazilElectronDataOfTime,
+          data: allDataOfTime,
         }
       ];
     }

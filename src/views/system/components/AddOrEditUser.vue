@@ -5,7 +5,7 @@
                 <el-input v-model.trim="formData.userName" placeholder="请输入用户账号" style="width: 250px;"></el-input>
             </el-form-item>
             <el-form-item label="密码:" prop="password" v-if="isAdd">
-                <el-input placeholder="请输入密码" v-model.trim="formData.password" show-password
+                <el-input type="password" placeholder="请输入密码" v-model.trim="formData.password" show-password
                     style="width: 250px;"></el-input>
             </el-form-item>
             <el-form-item label="用户头像:" prop="userImg" class="logo">
@@ -13,6 +13,7 @@
             </el-form-item>
             <el-form-item label="用户角色:" prop="roleId">
                 <el-select v-model="formData.roleId" placeholder="请选择用户角色" style="width: 250px;">
+                    <el-option :label="'无'" :value="-1"></el-option>
                     <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
                     </el-option>
                 </el-select>
@@ -29,7 +30,7 @@
 import { AddSysUser, UpdateSysUser } from '@/api/sysUser'
 import { ListAllRole } from '@/api/sysRole'
 import Upload from '@/views/gameManage/components/Upload'
-
+import { validatePassword } from '@/utils/validate'
 
 export default {
     components: {
@@ -43,7 +44,10 @@ export default {
             formData: {},
             rules: {
                 userName: [{ required: true, message: '请输入用户账号', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { validator: validatePassword, trigger: 'blur' }
+                ],
             },
             userImgList: [],
             roleList: [],

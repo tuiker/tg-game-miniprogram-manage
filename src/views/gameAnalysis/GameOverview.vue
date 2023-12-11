@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card shadow="never">
-      <el-select v-model="orderType" @change="getTableData">
+      <el-select v-model="params.orderType" @change="getTableData">
         <el-option label="按游戏添加时间倒序" :value="1"></el-option>
         <el-option label="按导流次数倒序" :value="2"></el-option>
       </el-select>
@@ -11,7 +11,7 @@
     }" :row-style="{ 'height': '20px', 'padding': '0' }" v-loading="tableLoading">
       <el-table-column label="排名" type="index" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.$index + 1 }}</span>
+          <span>{{ (params.page - 1) * params.pageSize + scope.$index + 1 }}</span>
         </template>
       </el-table-column>
       <el-table-column label="游戏分类" prop="gameCategory" min-width="120" align="center">
@@ -32,6 +32,10 @@
       <el-table-column label="游戏名称" prop="gameName" min-width="120" align="center"></el-table-column>
       <el-table-column label="导流次数" prop="openNum" min-width="120" align="center"></el-table-column>
     </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
+      :page-sizes="[10, 20, 50, 100]" :page-size="params.pageSize" layout="->,total, sizes, prev, pager, next, jumper"
+      :total="params.total">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -45,7 +49,12 @@ export default {
     return {
       tableData: [],
       tableLoading: false,
-      orderType: 1
+      params: {
+        orderType: 1,
+        page: 1,
+        pageSize: 10,
+        total: 0,
+      },
     }
   },
 
@@ -56,15 +65,24 @@ export default {
     //获取数据概况表格数据
     getTableData() {
       this.tableLoading = true
-      GetDataProfilingTableData({ orderType: this.orderType }).then(res => {
-        this.tableData = res.data
+      GetDataProfilingTableData(this.params).then(res => {
+        this.tableData = res.data.list
+        this.params.total = res.data.total
       }).finally(() => {
         this.tableLoading = false
       })
     },
     getCategoryName(item) {
       return GAME_CATEGORYS[item]
-    }
+    },
+    handleSizeChange(val) {
+      this.params.pageSize = val
+      this.getTableData()
+    },
+    handleCurrentChange(val) {
+      this.params.page = val
+      this.getTableData()
+    },
   }
 };
 </script>

@@ -31,7 +31,12 @@
             <el-table-column label="创建时间" prop="createTime" min-width="120" align="center"></el-table-column>
             <el-table-column label="修改人" prop="updater" min-width="120" align="center"></el-table-column>
             <el-table-column label="修改时间" prop="updateTime" min-width="120" align="center"></el-table-column>
-            <el-table-column label="角色" prop="roleName" min-width="120" align="center"></el-table-column>
+            <el-table-column label="角色" prop="roleName" min-width="120" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.id == 1">超级管理员</span>
+                    <span v-else>{{ scope.row.roleName }}</span>
+                </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" min-width="140" align="center">
                 <template slot-scope="scope">
                     <template v-if="scope.row.id != 1">
@@ -52,7 +57,7 @@
 
         <add-or-edit-user ref="addOrEditUserDialog" @success="getTableData"></add-or-edit-user>
 
-        <el-dialog :title="titel" :visible.sync="passwordFormvisible" width="600px" @close="resetFormData">
+        <el-dialog title="修改密码" :visible.sync="passwordFormvisible" width="600px">
             <el-form ref="passwordForm" :rules="passwordFormRules" :model="passwordFormData" label-width="100px">
                 <el-form-item label="新密码:" prop="password">
                     <el-input placeholder="请输入新密码" v-model.trim="passwordFormData.password" show-password></el-input>
@@ -68,6 +73,8 @@
 <script>
 import { GetSysUserList, DeleteById, UpdateSysUserPassword } from '@/api/sysUser'
 import AddOrEditUser from './components/AddOrEditUser.vue';
+import { validatePassword } from '@/utils/validate'
+
 
 export default {
     components: {
@@ -90,7 +97,10 @@ export default {
                 password: ''
             },
             passwordFormRules: {
-                password: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
+                password: [
+                    { required: true, message: '请输入新密码', trigger: 'blur' },
+                    { validator: validatePassword, trigger: 'blur' }
+                ],
             }
         }
     },

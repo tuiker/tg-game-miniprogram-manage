@@ -79,9 +79,13 @@ export default {
             this.$confirm('是否确认删除该角色？', '确认信息', {
                 distinguishCancelAndClose: true
             }).then(() => {
-                DeleteById({ id: id }).then(() => {
-                    this.$message.success("删除成功")
-                    this.getTableData();
+                DeleteById({ id: id }).then((res) => {
+                    if (res.data) {
+                        this.$message.success("删除成功")
+                        this.getTableData();
+                    } else {
+                        this.$message.error(res.msg)
+                    }
                 })
             })
         },
