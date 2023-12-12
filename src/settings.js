@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: 'TG游戏小程序后台管理系统',
 
   /**
    * @type {boolean}
